@@ -1,4 +1,5 @@
 ---
+import { Font } from "astro:assets";
 import { SITE } from "@/site.config";
 import "@/styles/global.css";
 
@@ -17,6 +18,38 @@ const { title } = Astro.props;
     <meta name="generator" content={Astro.generator} />
     <meta name="description" content={SITE.description} />
     <title>{title}</title>
+    <!--
+      Runs immediately, before the page is painted, so dark-mode visitors never
+      see a flash of the light theme. `is:inline` tells Astro to leave the
+      script exactly as written (no bundling, no deferring).
+      Rule: a saved choice wins; otherwise follow the OS setting.
+    -->
+    <script is:inline>
+      (function () {
+        var root = document.documentElement;
+        var media = window.matchMedia("(prefers-color-scheme: dark)");
+        var saved = null;
+        try {
+          saved = localStorage.getItem("theme");
+        } catch (e) {}
+
+        root.classList.toggle("dark", saved ? saved === "dark" : media.matches);
+
+        // If there's no saved choice, keep following the OS if it changes.
+        media.addEventListener("change", function (event) {
+          var stillNoChoice = false;
+          try {
+            stillNoChoice = !localStorage.getItem("theme");
+          } catch (e) {
+            stillNoChoice = true;
+          }
+          if (stillNoChoice) root.classList.toggle("dark", event.matches);
+        });
+      })();
+    </script>
+    <Font cssVariable="--ff-display" preload />
+    <Font cssVariable="--ff-body" preload />
+    <Font cssVariable="--ff-mono" />
   </head>
   <body>
     <slot />

@@ -2,9 +2,10 @@ export const SITE = {
   name: "Nikola Begović",
   role: "Full-Stack Developer",
   email: "begovic.office@gmail.com",
-  tagline: "", // TODO: write a tagline
-  description: "", // TODO: write a description
-  status: "Currently at X · open to work", // optional, delete if unused
+  tagline: "I build web products that large teams depend on.",
+  description:
+    "I'm a senior developer building React and TypeScript web apps for insurance, mapping, and enterprise platforms since 2017. Experience and writing.",
+  status: "Currently contracting with SeeSawLabs · open to work Q1 2027", // optional, delete if unused
   social: [
     { label: "GitHub", href: "https://github.com/BegovicNikola" },
     { label: "LinkedIn", href: "https://www.linkedin.com/in/nikola-begovic/" },

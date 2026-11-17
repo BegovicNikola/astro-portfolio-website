@@ -1,8 +1,26 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
 import { SITE } from "@/site.config";
 ---
 
+<!-- TEMPORARY: a style preview for Step 3. Replaced by the real Hero in Step 5. -->
 <BaseLayout title={SITE.name}>
-  <h1>Hello World!</h1>
+  <main class="wrapper py-16">
+    <!-- TEMPORARY: moves into the Header in Step 4 -->
+    <div class="mb-10 flex justify-end">
+      <ThemeToggle />
+    </div>
+    <p class="text-ink-soft mb-6 inline-flex items-center gap-2 font-mono text-xs">
+      <span class="bg-signal h-1.5 w-1.5 rounded-full" aria-hidden="true"></span>
+      {SITE.status}
+    </p>
+    <h1 class="font-display text-4xl leading-[1.1] font-medium sm:text-5xl">
+      {SITE.tagline}
+    </h1>
+    <p class="text-ink-soft mt-6 max-w-md">{SITE.description}</p>
+    <div class="border-line mt-12 border-t pt-6">
+      <a href="/blog" class="text-signal font-medium">A link in the signal color →</a>
+    </div>
+  </main>
 </BaseLayout>

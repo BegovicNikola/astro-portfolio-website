@@ -1,2 +1,88 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
+
+/*
+ * 1. DARK MODE SWITCH
+ * By default Tailwind's `dark:` variant follows the OS setting. This line
+ * makes it follow a `dark` class on <html> instead, so a toggle button can
+ * control it later.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * 2. COLOR VALUES
+ * Plain CSS variables. The values change when <html> has the `dark` class.
+ *   paper     page background
+ *   ink       main text
+ *   ink-soft  secondary text (dates, labels)
+ *   signal    the one accent color (links, hovers)
+ *   line      borders and dividers
+ */
+:root {
+  --paper: #f7f6f3;
+  --ink: #15161b;
+  --ink-soft: #5b5d66;
+  --signal: #3d3dff;
+  --line: #e4e2dc;
+  color-scheme: light; /* tells the browser to draw scrollbars etc. in light */
+}
+
+.dark {
+  color-scheme: dark;
+  --paper: #101114;
+  --ink: #f2f1ed;
+  --ink-soft: #9a9ca6;
+  --signal: #7b7bff;
+  --line: #26272c;
+}
+
+/*
+ * 3. TAILWIND THEME
+ * `@theme` turns these names into utility classes:
+ *   --color-paper  ->  bg-paper, text-paper, border-paper ...
+ *   --font-display ->  font-display
+ * `inline` makes the utilities read the variables above at use time, so they
+ * follow the light/dark switch.
+ */
+@theme inline {
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-signal: var(--signal);
+  --color-line: var(--line);
+
+  /* --ff-* variables are created by the fonts in astro.config.mjs */
+  --font-display: var(--ff-display);
+  --font-body: var(--ff-body);
+  --font-mono: var(--ff-mono);
+}
+
+/*
+ * 4. BASE STYLES
+ * Defaults for plain elements, so we don't repeat them on every page.
+ */
+@layer base {
+  body {
+    @apply bg-paper font-body text-ink antialiased;
+  }
+
+  ::selection {
+    background: color-mix(in oklab, var(--signal) 25%, transparent);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: 2px;
+  }
+}
+
+/*
+ * 5. THE CONTENT COLUMN
+ * A custom utility: `class="wrapper"` gives a narrow, centered column with
+ * side padding. Header, sections and footer will all use it so they line up.
+ */
+@utility wrapper {
+  margin-inline: auto;
+  max-width: var(--container-3xl);
+  padding-inline: calc(var(--spacing) * 6);
+}
